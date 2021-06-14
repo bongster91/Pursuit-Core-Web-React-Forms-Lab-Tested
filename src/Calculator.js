@@ -5,9 +5,10 @@ export default class Calculator extends Component {
         super()
 
         this.state = {
-            number: [],
+            numArr: [],
             display: '',
-            operation: ''
+            operation: '',
+            input: ''
         };
     }; 
 
@@ -18,37 +19,31 @@ export default class Calculator extends Component {
     };
 
     handleNumChange = (e) => {
-        const { value } = e.target
-        this.setState({
-            number: [value]
+        this.setState({ 
+            input: e.target.value,
+            numArr: [...this.state.numArr, parseInt(e.target.value)]
         });
     };
 
     handleSubmit = (e) => {
         e.preventDefault()
-        
-        const { number, operation, display } = this.state;
+        const { numArr, input, operation, display } = this.state;
 
-        let numbers = parseInt(number).filter((num) => {
-            return num !== ',' || num !== ' '
-        })
+        let numbers = numArr.filter(number => number !== ',')
         
-        for(let num of numbers) {
+        console.log(numbers)
+        for(let num in numbers) {np
             if(typeof num !== 'number'){
                 this.setState({display: 'Invalid Input'});
             };
+          
+            console.log(typeof num)
         };
 
-        if(operation === 'sum') {
-            let sum = numbers.reduce((a, b) => a + b)
-            this.setState({display: sum})
-        }
     };
         
-
-
     render() {
-        const { number, display } = this.state;
+        const { input, display } = this.state;
         
         return (
             <>
@@ -58,9 +53,13 @@ export default class Calculator extends Component {
                         id="input" 
                         type="text"
                         onChange={this.handleNumChange}
-                        value={number}
+                        value={input}
                     />
-                    <select name="selectedOption" id="" onChange={this.handleOperation}>
+                    <select 
+                        name="selectedOption" 
+                        id="" 
+                        onChange={this.handleOperation}
+                    >
                         <option value="sum">Sum</option>
                         <option value="average">Average</option>
                         <option value="mode">Mode</option>
